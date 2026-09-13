@@ -417,4 +417,3 @@ Ideas that would extend this further, deliberately left out of v1 to keep scope 
 - **Webhook/notification hook on early-warning alerts** — push HIGH/CRITICAL transitions to a real channel (email/Slack) instead of only appearing in the dashboard.
 
 ---
-🤖 Built with [Claude Code](https://claude.com/claude-code)
