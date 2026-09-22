@@ -417,3 +417,7 @@ Ideas that would extend this further, deliberately left out of v1 to keep scope 
 - **Webhook/notification hook on early-warning alerts** — push HIGH/CRITICAL transitions to a real channel (email/Slack) instead of only appearing in the dashboard.
 
 ---
+
+<img width="1915" height="891" alt="Ekran görüntüsü 2026-09-23 005928" src="https://github.com/user-attachments/assets/9ae60bf2-f364-43d6-8b21-519d0793339c" />
+<img width="1913" height="893" alt="Ekran görüntüsü 2026-09-23 005903" src="https://github.com/user-attachments/assets/005c7b46-704b-46a4-af17-61aede76cae7" />
+<img width="686" height="850" alt="Ekran görüntüsü 2026-09-23 010048" src="https://github.com/user-attachments/assets/1237dfe0-9af9-4f7c-aa6b-4dcb557ba13a" />
