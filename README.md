@@ -65,92 +65,78 @@ A bank doesn't just run `model.predict()`. Before approving a loan it moves data
                         ↓             risk_alerts, model_versions)
                 ┌───────────────┐
                 │   Dashboard   │   (React + TypeScript SPA, EN/TR — control
-                └───────────────┘    center, customer 360, early-warning alerts,
-                                      model monitoring, stress test lab,
-                                      real-dataset benchmark)
+                └───────────────┘    loan book, account review, watchlist,
+                                      model, score, scenario, real book)
 ```
 
 A second, standing loop runs over the existing portfolio: each customer's 12-month behavioral history (utilization, balance, withdrawals, late payments) is re-scored by the **same model** at two points in time. A real transition between risk buckets — not just a threshold breach — triggers an early-warning alert.
 
 ## Screenshots
 
-**Risk Control Center** — portfolio KPIs, live risk distribution, unresolved early-warning alerts.
+**Loan book** — the portfolio on one scale, and the accounts that moved onto the watchlist.
 
-![Risk Control Center](docs/screenshots/control_center.svg)
+![Loan book](docs/screenshots/control_center.svg)
 
-**Live Risk Simulator** — a new application scored end to end, with the SHAP drivers behind the number.
+**Score an application** — a new application scored end to end, with the drivers behind the number.
 
-![Live Risk Simulator with SHAP explanation](docs/screenshots/customer_360_shap.svg)
+![Score an application, with SHAP drivers](docs/screenshots/customer_360_shap.svg)
 
-**Real Dataset Benchmark** — the same pipeline on 30,000 real customers, and the fair-lending finding it surfaced.
+**Real portfolio test** — the same pipeline on 30,000 real customers, and the fair-lending finding it surfaced.
 
-![Real dataset benchmark and fair lending screen](docs/screenshots/real_dataset_fairness.svg)
+![Real portfolio test and fair lending screen](docs/screenshots/real_dataset_fairness.svg)
 
-## Example: `POST /predict-risk`
+## What a decision looks like
 
-```json
-{
-  "age": 34, "occupation": "Engineer", "income": 85000,
-  "employment_years": 3, "credit_history_years": 6,
-  "num_existing_loans": 2, "num_credit_inquiries_6m": 3,
-  "total_debt": 310000, "monthly_payment": 9800,
-  "credit_utilization": 0.72, "num_late_payments": 2,
-  "account_balance": 42000, "transaction_intensity": 35,
-  "loan_amount": 250000
-}
-```
+`POST /predict-risk` on a weak application:
 
 ```json
 {
-  "risk_score": 738,
-  "probability_of_default": 0.081,
-  "risk_level": "MEDIUM",
-  "decision": "MANUAL_REVIEW",
-  "suggested_interest_rate": 0.0427,
-  "approved_amount": 250000.0,
+  "risk_score": 300,
+  "probability_of_default": 1.0,
+  "risk_level": "CRITICAL",
+  "decision": "REJECT",
   "key_risk_drivers": [
-    { "feature": "Debt / Income Ratio", "contribution": 0.21 },
-    { "feature": "Credit Utilization", "contribution": 0.16 },
-    { "feature": "Late Payments", "contribution": 0.13 },
-    { "feature": "Employment Duration", "contribution": 0.07 },
-    { "feature": "Account Balance", "contribution": -0.04 }
+    { "code": "debt_to_income", "contribution": 0.3416 },
+    { "code": "num_late_payments", "contribution": 0.2362 },
+    { "code": "credit_utilization", "contribution": 0.0876 }
   ],
-  "reason_codes": [
-    "Debt-to-income ratio is too high",
-    "Proportion of revolving balances to credit limits is too high"
-  ]
+  "reason_codes": ["dti_too_high", "delinquent_obligations", "revolving_utilisation_too_high"]
 }
 ```
 
-`reason_codes` is empty on `APPROVE` and only populated on `MANUAL_REVIEW`/`REJECT` — mirroring how adverse action notices actually work.
+The dashboard renders those grounds as "Debt is too high relative to income" for
+an English reader and "Borç, gelire göre fazla yüksek" for a Turkish one — see
+[Design system & localization](#design-system--localization) for why the API
+states a code rather than a sentence. `reason_codes` is empty on `APPROVE` and
+populated only on `MANUAL_REVIEW` / `REJECT`, mirroring when an adverse action
+notice is actually owed.
 
-(Actual numbers vary run-to-run — see `artifacts/model_metrics.json` for the exact trained model's figures.)
-
-## Early Warning example
-
-```
-January   Credit utilization: 32%
-February  Credit utilization: 41%
-March     Credit utilization: 58%
-April     Credit utilization: 71%
-```
+An account that moved onto the watchlist, from `GET /alerts`:
 
 ```json
 {
-  "customer_id": 18472,
-  "previous_risk_level": "LOW",
-  "current_risk_level": "HIGH",
+  "customer_id": 18899,
+  "previous_risk_level": "HIGH",
+  "current_risk_level": "CRITICAL",
+  "previous_pd": 0.2005,
+  "current_pd": 0.3229,
   "signals": [
-    "Credit utilization increased 39% in last 2 months",
-    "Account balance decreased 22%",
-    "1 new late payment(s) recorded",
-    "Cash withdrawal frequency +42%"
+    { "code": "balance_down", "params": { "pct": 18.0 } },
+    { "code": "new_late_payments", "params": { "count": 1.0 } },
+    { "code": "withdrawals_up", "params": { "pct": 67.0 } }
   ],
-  "recommended_action": "Immediate customer risk review"
+  "recommended_action": "immediate_review"
 }
 ```
 
-This isn't a threshold rule on one field — it's the same PD model scored at two points in the customer's 12-month history, so "risk increased" means the model's own estimate moved between risk buckets.
+This is not a threshold rule on one field. The same PD model is scored at two
+points in the account's history, so "risk rose" means the model's own estimate
+crossed a band — here from 20.1% to 32.3%. The signals explain what changed
+underneath it.
+
+More responses, including the approve path, in
+[docs/api-examples.md](docs/api-examples.md). All of them are copied from a
+running instance rather than written by hand.
 
 ## Real-data benchmark (not just synthetic)
 
@@ -173,7 +159,7 @@ which is what the early-warning engine needs: it rebuilds every feature as it
 looked two months earlier (`build_customers(as_of_index=...)`) and re-scores,
 surfacing 6,175 genuine risk escalations across the book.
 
-The dashboard's **Real Dataset** page shows the result side by side with the
+The dashboard's **Real book** page shows the result side by side with the
 synthetic one:
 
 | | Synthetic | Real (UCI) |
@@ -234,7 +220,7 @@ than ship. A screen that never fires on real data isn't a screen.
 
 ## Explainable AI
 
-`src/explainability/shap_explainer.py` wraps the champion model with a model-agnostic SHAP `PermutationExplainer`, so every prediction comes with a ranked, human-readable list of what pushed risk up or down — the same explanation surfaces in `/predict-risk`, `/credit-decision` and the dashboard's Customer 360 page.
+`src/explainability/shap_explainer.py` wraps the champion model with a model-agnostic SHAP `PermutationExplainer`, so every prediction comes with a ranked, human-readable list of what pushed risk up or down — the same explanation surfaces in `/predict-risk`, `/credit-decision` and the dashboard's account review.
 
 One detail that is easy to get wrong and worth calling out: the explainer runs against the **calibrated** pipeline, not the raw model underneath it. The base estimator is fit with `class_weight="balanced"`, which shifts its probabilities onto a different scale entirely — explaining that model would have produced drivers that summed to a number nowhere near the PD actually shown to the user. Attributing on the calibrated pipeline keeps `base_value + Σcontributions` equal to the reported probability of default.
 
@@ -255,7 +241,7 @@ else:                           decision = "REJECT"
 
 ## Model monitoring
 
-`src/monitoring/drift.py` computes **Population Stability Index (PSI)** per feature against the training-time reference distribution — the dashboard's Model Monitoring page surfaces PSI, drift severity, calibration curves and the live risk-level distribution, closing the loop from "trained a model" to "watching it in production."
+`src/monitoring/drift.py` computes **Population Stability Index (PSI)** per feature against the training-time reference distribution — the dashboard's model page surfaces PSI, drift severity, calibration curves and the live risk-level distribution, closing the loop from "trained a model" to "watching it in production."
 
 ## Regulatory & risk management
 
@@ -263,11 +249,11 @@ A model that only outputs a probability isn't deployable at a bank. Four pieces 
 
 **Adverse Action Reason Codes** (`src/decision/reason_codes.py`) — U.S. lenders must tell a declined applicant *why* under ECOA/Regulation B (12 CFR 1002.9). Rather than maintaining a separate rule engine, the reasons are derived straight from the SHAP drivers that increased *this* applicant's PD the most, translated into standard notice language. `age` and `occupation` are hard-excluded from ever appearing on a notice — one is a protected characteristic under ECOA, the other a plausible proxy for one.
 
-**Expected Credit Loss** (`src/risk/expected_loss.py`) — IFRS 9 / CECL-style provisioning: `EL = PD × LGD × EAD`, with LGD defaulted to Basel's 45% Foundation-IRB senior-unsecured-retail assumption. Surfaced as a portfolio KPI on the Model Monitoring page.
+**Expected Credit Loss** (`src/risk/expected_loss.py`) — IFRS 9 / CECL-style provisioning: `EL = PD × LGD × EAD`, with LGD defaulted to Basel's 45% Foundation-IRB senior-unsecured-retail assumption. Surfaced as a portfolio readout on the model page.
 
-**Stress Testing** (`src/risk/stress_test.py`, dashboard → *Stress Test Lab*) — a CCAR/DFAST-style macro scenario: an unemployment shock and a rate shock push utilization up, income down and payments up on the sampled portfolio, which is then **re-scored with the exact same production model** — not a separate stress model — to compare baseline vs. stressed risk distribution and expected loss.
+**Stress Testing** (`src/risk/stress_test.py`, dashboard → *Scenario*) — a CCAR/DFAST-style macro scenario: an unemployment shock and a rate shock push utilization up, income down and payments up on the sampled portfolio, which is then **re-scored with the exact same production model** — not a separate stress model — to compare baseline vs. stressed risk distribution and expected loss.
 
-**Fair Lending Monitor** (`src/monitoring/fairness.py`, dashboard → *Model Monitoring* and *Real Dataset*) — a disparate-impact screen using the EEOC/OFCCP four-fifths rule: any group approved less than 80% as often as the reference group is flagged for review. On the synthetic book `occupation` stands in as a demonstration segment; on the real UCI book it runs against genuine protected attributes (sex, marital status, education) and **finds something** — see the section above.
+**Fair Lending Monitor** (`src/monitoring/fairness.py`, dashboard → *Model* and *Real book*) — a disparate-impact screen using the EEOC/OFCCP four-fifths rule: any group approved less than 80% as often as the reference group is flagged for review. On the synthetic book `occupation` stands in as a demonstration segment; on the real UCI book it runs against genuine protected attributes (sex, marital status, education) and **finds something** — see the section above.
 
 Two details the implementation gets right that a naive version doesn't:
 
@@ -292,15 +278,16 @@ api/               FastAPI app + routers
 frontend/          React + TypeScript SPA (Vite, Tailwind CSS, Recharts)
   src/api/         typed REST client
   src/components/  top nav, design-system primitives (ui.tsx), badges, SHAP chart
-  src/i18n/        English/Turkish translations + locale provider
-  src/pages/       Control Center, Customer 360, Alerts, Monitoring, Simulator,
-                   Stress Test Lab, Real Dataset
+  src/i18n/        English/Turkish translations, locale provider, and the
+                   writers that turn API codes into sentences
+  src/pages/       Loan book, Account, Watchlist, Model, Score, Scenario,
+                   Real portfolio test
 scripts/           run_pipeline.py (synthetic: generate → train → seed)
                    analyze_real_dataset.py (real book: score → fairness → early warning)
 tests/             pytest suite
 ```
 
-> `dashboard/` also contains an earlier Streamlit prototype of the same UI, kept for quick local iteration without a Node toolchain (`streamlit run dashboard/Home.py`) — `frontend/` is the primary, production-styled dashboard.
+> `dashboard/` holds a Streamlit prototype from an earlier iteration. It still runs (`streamlit run dashboard/Home.py`) and needs no Node toolchain, but it predates the current design and copy, so treat `frontend/` as the dashboard.
 
 ## Database schema
 
@@ -361,8 +348,9 @@ To view the dashboard from another device (e.g. a phone) on the same network, Vi
 ### Tests
 
 ```bash
-pytest            # 23 tests: decision engine, scoring, reason codes, expected loss,
-                  # stress shocks, fairness screen, UCI adapter, API contract
+pytest            # 30 tests: decision engine, scoring, adverse action grounds,
+                  # expected loss, stress shocks, fairness screen, UCI adapter,
+                  # early-warning signal contract, API contract
 cd frontend && npx tsc -b --noEmit   # frontend type check
 ```
 
@@ -372,28 +360,60 @@ reference that flags everyone else.
 
 ## Design system & localization
 
-The dashboard is built against a token-driven design system defined in the
-`@theme` block of `frontend/src/index.css`: white canvas, black pill CTAs, a
-canary-yellow brand mark reserved for the wordmark and tag chips, and pastel
-feature cards (yellow / coral / rose / teal) carrying the KPI tiles. Radii, type
-scale and elevation all resolve from those tokens — components never hard-code a
-one-off value. `frontend/src/components/ui.tsx` holds the primitives (Button,
-Card, FeatureCard, StatCard, Chip, PillTab, Table, Callout).
+The interface is built as a **measuring instrument**, because the product's
+claim is that it measures credit risk honestly and can show its calibration.
+That decision drives everything else: bands, tick rules and readouts instead of
+cards and gradients.
 
-Chart colors come from the same palette rather than a separate viz theme: risk
-severity reads as an ordered ramp — teal → yellow → coral → deep wine — and SHAP
-bars use teal for risk-reducing and coral for risk-increasing contributions.
-
-Type is set in Roobert PRO where available, falling back to **Plus Jakarta
-Sans** (the closest freely available match for its geometric, slightly rounded
-character) since Roobert is a commercial licence.
+- **Ground** is a cool graph-paper grey-green (`#dfe5e0`), panels a brighter
+  paper laid on top. **Ink** is a deep petrol (`#12262b`) rather than a tinted
+  black. A single **signal red** (`#b3382c`) is reserved for events — an
+  escalation, a flagged group, a contribution that raises risk.
+- **Risk bands** use printed-ink RAG — teal, ochre, tile, deep wine — muted
+  enough that a full table of them stays readable, and ordered so severity
+  reads as a ramp rather than four unrelated hues.
+- **Type** is Instrument Sans for the interface and IBM Plex Mono for every
+  figure. The mono is doing real work: columns of numbers have to align to be
+  scannable, so all figures carry tabular lining numerals. It is never used for
+  decorative labels.
+- **The measure** is the signature device. `BandMeasure` puts the whole
+  portfolio on one scale with a tick rule beneath it, and it takes the space a
+  row of KPI tiles would otherwise fill — the distribution *is* the portfolio
+  view a risk analyst opens the page for. The stress scenario stacks the same
+  measure twice, so the mass visibly moves right under shock.
+- Panels are separated by rules and ground shifts, with 2–3px radii and no drop
+  shadows anywhere. Tokens live in the `@theme` block of
+  `frontend/src/index.css`; primitives in `frontend/src/components/ui.tsx`
+  (Panel, BandMeasure, MiniMeasure, Readout, BandChip, DataTable, Note).
 
 The whole UI ships in **English and Turkish**. `frontend/src/i18n/` holds the
-translation tables and a provider that persists the choice to `localStorage` and
-picks up the browser language on first load. Numbers, percentages and dates run
-through `Intl` with the active locale, so Turkish renders `20.000` and `%7,05`
-where English renders `20,000` and `7.05%`. Switch languages from the top-right
-toggle.
+translation tables and a provider that persists the choice to `localStorage`
+and picks up the browser language on first load. Numbers, percentages and dates
+run through `Intl` with the active locale, so Turkish renders `20.000` and
+`%7,05` where English renders `20,000` and `7.05%` — note that the percent sign
+moves, which is why percentages go through `Intl` rather than a trailing `%`.
+**The API never returns display prose.** Every human-readable string the
+dashboard shows is chosen at presentation, because the wording has to follow the
+reader's language:
+
+| The API says | The dashboard writes |
+|---|---|
+| `{"code": "utilization_up", "params": {"pct": 27}}` | "Utilisation up 27 points over two months" |
+| `{"code": "debt_to_income", "contribution": 0.45}` | "Debt to income" |
+| `"dti_too_high"` | "Debt is too high relative to income" |
+| `"immediate_review"` | "Review now" |
+
+`src/i18n/signals.ts` writes the findings and `src/i18n/modelLabels.ts` the
+feature labels, adverse action grounds and recommended actions. Tests pin the
+contract on the Python side, so a future change cannot quietly put an English
+sentence back into the payload — including one asserting that an adverse action
+ground contains no spaces.
+
+Two consequences worth noting. Several model features map to the same adverse
+action ground (three utilisation-change windows all mean "credit use has risen"),
+so the applicant is told each ground once rather than three times. And the notice
+wording is now a presentation concern, which is what lets the same decision be
+served to a Turkish applicant in Turkish without touching the decision engine.
 
 ## Stack
 
@@ -417,7 +437,4 @@ Ideas that would extend this further, deliberately left out of v1 to keep scope 
 - **Webhook/notification hook on early-warning alerts** — push HIGH/CRITICAL transitions to a real channel (email/Slack) instead of only appearing in the dashboard.
 
 ---
-
-<img width="1915" height="891" alt="Ekran görüntüsü 2026-09-23 005928" src="https://github.com/user-attachments/assets/9ae60bf2-f364-43d6-8b21-519d0793339c" />
-<img width="1913" height="893" alt="Ekran görüntüsü 2026-09-23 005903" src="https://github.com/user-attachments/assets/005c7b46-704b-46a4-af17-61aede76cae7" />
-<img width="686" height="850" alt="Ekran görüntüsü 2026-09-23 010048" src="https://github.com/user-attachments/assets/1237dfe0-9af9-4f7c-aa6b-4dcb557ba13a" />
+🤖 Built with [Claude Code](https://claude.com/claude-code)
