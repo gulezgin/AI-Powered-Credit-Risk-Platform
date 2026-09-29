@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: bankai
+      POSTGRES_USER: bankai
+      POSTGRES_PASSWORD: bankai
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bankai -d bankai"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    command: ["python", "-m", "scripts.run_pipeline"]
+    environment:
+      DATABASE_URL: postgresql+psycopg2://bankai:bankai@postgres:5432/bankai
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      DATABASE_URL: postgresql+psycopg2://bankai:bankai@postgres:5432/bankai
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pipeline:
+        condition: service_completed_successfully
+    volumes:
+      - ./artifacts:/app/artifacts
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        # Baked in at build time — this runs in the user's browser, so it must
+        # be an address the HOST machine can reach, not the Docker service name.
+        VITE_API_BASE_URL: http://localhost:8000
+    ports:
+      - "4173:4173"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

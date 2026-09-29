@@ -1,0 +1,89 @@
+<svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg" font-family="Instrument Sans, Segoe UI, Arial, sans-serif">
+  <rect width="1000" height="600" fill="#dfe5e0"/>
+
+  <!-- nav -->
+  <line x1="0" y1="56" x2="1000" y2="56" stroke="#12262b"/>
+  <text x="40" y="34" font-size="15" font-weight="600" fill="#12262b" letter-spacing="-0.4">BankAI</text>
+  <text x="100" y="34" font-size="10" fill="#74878b">credit risk</text>
+  <g font-size="12" font-weight="500" fill="#74878b">
+    <text x="176" y="34">Loan book</text>
+    <text x="256" y="34">Account</text>
+    <text x="324" y="34">Watchlist</text>
+    <text x="396" y="34">Model</text>
+    <text x="448" y="34" fill="#12262b">Score</text>
+    <text x="500" y="34">Scenario</text>
+    <text x="566" y="34">Real book</text>
+  </g>
+  <rect x="448" y="54" width="38" height="2" fill="#12262b"/>
+  <rect x="900" y="16" width="60" height="22" fill="none" stroke="#c3ccc7"/>
+  <rect x="900" y="16" width="30" height="22" fill="#12262b"/>
+  <text x="915" y="31" font-size="10" font-weight="600" fill="#f7f9f6" text-anchor="middle">EN</text>
+  <text x="945" y="31" font-size="10" font-weight="600" fill="#74878b" text-anchor="middle">TR</text>
+
+  <!-- header -->
+  <text x="40" y="112" font-size="32" font-weight="600" fill="#12262b" letter-spacing="-0.8">Score an application</text>
+  <text x="40" y="136" font-size="13" fill="#45595e">Put an application through the live decision service. Nothing is saved.</text>
+  <line x1="40" y1="156" x2="960" y2="156" stroke="#12262b"/>
+
+  <!-- decision record -->
+  <rect x="40" y="184" width="920" height="96" fill="#f7f9f6" stroke="#c3ccc7"/>
+  <line x1="270" y1="185" x2="270" y2="279" stroke="#c3ccc7"/>
+  <line x1="500" y1="185" x2="500" y2="279" stroke="#c3ccc7"/>
+  <line x1="730" y1="185" x2="730" y2="279" stroke="#c3ccc7"/>
+
+  <text x="68" y="212" font-size="12" fill="#45595e">Score</text>
+  <text x="68" y="258" font-size="44" font-weight="500" fill="#12262b" font-family="IBM Plex Mono, monospace" letter-spacing="-2">850</text>
+
+  <text x="298" y="212" font-size="12" fill="#45595e">Probability of default</text>
+  <text x="298" y="252" font-size="27" font-weight="500" fill="#12262b" font-family="IBM Plex Mono, monospace" letter-spacing="-1">0.6%</text>
+
+  <text x="528" y="212" font-size="12" fill="#45595e">Risk band</text>
+  <rect x="528" y="226" width="44" height="20" fill="#dde9e4"/>
+  <text x="550" y="240" font-size="11.5" font-weight="500" fill="#2e6f63" text-anchor="middle">Low</text>
+
+  <text x="758" y="212" font-size="12" fill="#45595e">Decision</text>
+  <rect x="758" y="226" width="64" height="20" fill="#dde9e4"/>
+  <text x="790" y="240" font-size="11.5" font-weight="500" fill="#2e6f63" text-anchor="middle">Approve</text>
+
+  <!-- verdict note -->
+  <rect x="40" y="300" width="920" height="40" fill="#dde9e4"/>
+  <rect x="40" y="300" width="2" height="40" fill="#2e6f63"/>
+  <text x="64" y="325" font-size="12.5" fill="#2e6f63">Approved for 250,000 TL at 1.96%.</text>
+
+  <!-- drivers -->
+  <rect x="40" y="364" width="920" height="212" fill="#f7f9f6" stroke="#c3ccc7"/>
+  <line x1="41" y1="410" x2="959" y2="410" stroke="#c3ccc7"/>
+  <text x="68" y="390" font-size="15" font-weight="600" fill="#12262b">What drove the estimate</text>
+  <text x="248" y="390" font-size="11" fill="#74878b">Contribution to the probability of default, either side of the base rate.</text>
+
+  <g font-size="11" fill="#45595e">
+    <text x="68" y="434">Monthly Income</text>
+    <text x="68" y="464">Credit Utilization</text>
+    <text x="68" y="494">Debt / Income Ratio</text>
+    <text x="68" y="524">Recent Credit Inquiries</text>
+    <text x="68" y="554">Total Debt</text>
+  </g>
+
+  <!-- tracks: zero line at x=520, half-span 300 -->
+  <g>
+    <rect x="220" y="438" width="600" height="11" fill="#d8e0da"/>
+    <rect x="220" y="468" width="600" height="11" fill="#d8e0da"/>
+    <rect x="220" y="498" width="600" height="11" fill="#d8e0da"/>
+    <rect x="220" y="528" width="600" height="11" fill="#d8e0da"/>
+    <rect x="220" y="558" width="600" height="11" fill="#d8e0da"/>
+  </g>
+  <rect x="220" y="438" width="300" height="11" fill="#2e6f63"/>
+  <rect x="520" y="468" width="150" height="11" fill="#b3382c"/>
+  <rect x="457" y="498" width="63" height="11" fill="#2e6f63"/>
+  <rect x="520" y="528" width="46" height="11" fill="#b3382c"/>
+  <rect x="520" y="558" width="40" height="11" fill="#b3382c"/>
+  <line x1="520" y1="434" x2="520" y2="573" stroke="#12262b"/>
+
+  <g font-size="11.5" font-family="IBM Plex Mono, monospace" text-anchor="end">
+    <text x="932" y="447" fill="#2e6f63">-0.1634</text>
+    <text x="932" y="477" fill="#b3382c">+0.0819</text>
+    <text x="932" y="507" fill="#2e6f63">-0.0341</text>
+    <text x="932" y="537" fill="#b3382c">+0.0250</text>
+    <text x="932" y="567" fill="#b3382c">+0.0216</text>
+  </g>
+</svg>

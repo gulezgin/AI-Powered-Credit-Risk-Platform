@@ -1,0 +1,127 @@
+<svg viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg" font-family="Instrument Sans, Segoe UI, Arial, sans-serif">
+  <rect width="1000" height="620" fill="#dfe5e0"/>
+
+  <!-- nav -->
+  <line x1="0" y1="56" x2="1000" y2="56" stroke="#12262b"/>
+  <text x="40" y="34" font-size="15" font-weight="600" fill="#12262b" letter-spacing="-0.4">BankAI</text>
+  <text x="100" y="34" font-size="10" fill="#74878b">credit risk</text>
+  <g font-size="12" font-weight="500" fill="#74878b">
+    <text x="176" y="34">Loan book</text>
+    <text x="256" y="34">Account</text>
+    <text x="324" y="34">Watchlist</text>
+    <text x="396" y="34">Model</text>
+    <text x="448" y="34">Score</text>
+    <text x="500" y="34">Scenario</text>
+    <text x="566" y="34" fill="#12262b">Real book</text>
+  </g>
+  <rect x="566" y="54" width="64" height="2" fill="#12262b"/>
+  <rect x="900" y="16" width="60" height="22" fill="none" stroke="#c3ccc7"/>
+  <rect x="900" y="16" width="30" height="22" fill="#12262b"/>
+  <text x="915" y="31" font-size="10" font-weight="600" fill="#f7f9f6" text-anchor="middle">EN</text>
+  <text x="945" y="31" font-size="10" font-weight="600" fill="#74878b" text-anchor="middle">TR</text>
+
+  <!-- header -->
+  <text x="40" y="112" font-size="32" font-weight="600" fill="#12262b" letter-spacing="-0.8">Real portfolio test</text>
+  <text x="40" y="136" font-size="13" fill="#45595e">The same pipeline retrained on a real bank&#8217;s card portfolio, reported next to the synthetic one.</text>
+  <text x="960" y="110" font-size="22" font-weight="500" fill="#12262b" text-anchor="end" font-family="IBM Plex Mono, monospace" letter-spacing="-0.5">30,000</text>
+  <text x="960" y="128" font-size="11" fill="#74878b" text-anchor="end">accounts</text>
+  <line x1="40" y1="156" x2="960" y2="156" stroke="#12262b"/>
+
+  <!-- readout strip -->
+  <rect x="40" y="180" width="920" height="76" fill="#f7f9f6" stroke="#c3ccc7"/>
+  <line x1="224" y1="181" x2="224" y2="255" stroke="#c3ccc7"/>
+  <line x1="408" y1="181" x2="408" y2="255" stroke="#c3ccc7"/>
+  <line x1="592" y1="181" x2="592" y2="255" stroke="#c3ccc7"/>
+  <line x1="776" y1="181" x2="776" y2="255" stroke="#c3ccc7"/>
+  <g font-size="11.5" fill="#45595e">
+    <text x="64" y="206">Accounts scored</text>
+    <text x="248" y="206">Actual default rate</text>
+    <text x="432" y="206">Model average PD</text>
+    <text x="616" y="206">Expected credit loss</text>
+    <text x="800" y="206">Escalations found</text>
+  </g>
+  <g font-size="19" font-weight="500" font-family="IBM Plex Mono, monospace" letter-spacing="-0.5">
+    <text x="64" y="236" fill="#12262b">30,000</text>
+    <text x="248" y="236" fill="#12262b">22.12%</text>
+    <text x="432" y="236" fill="#12262b">22.39%</text>
+    <text x="616" y="236" fill="#12262b">146.5M</text>
+    <text x="800" y="236" fill="#b3382c">6,175</text>
+  </g>
+
+  <!-- excluded note -->
+  <rect x="40" y="272" width="920" height="46" fill="#efe7d4"/>
+  <rect x="40" y="272" width="2" height="46" fill="#9c7420"/>
+  <text x="64" y="292" font-size="12" font-weight="600" fill="#9c7420">Kept out of the model: Sex, Marital status, Education.</text>
+  <text x="64" y="309" font-size="11.5" fill="#9c7420">ECOA / Regulation B bars sex and marital status from a credit decision. All three are used only to screen the outcome.</text>
+
+  <!-- comparison -->
+  <rect x="40" y="338" width="440" height="252" fill="#f7f9f6" stroke="#c3ccc7"/>
+  <line x1="41" y1="382" x2="479" y2="382" stroke="#c3ccc7"/>
+  <text x="66" y="364" font-size="15" font-weight="600" fill="#12262b">Synthetic against real</text>
+  <g font-size="9.5" font-weight="500" fill="#74878b">
+    <text x="66" y="406">MEASURE</text>
+    <text x="340" y="406" text-anchor="end">SYNTHETIC</text>
+    <text x="454" y="406" text-anchor="end">REAL</text>
+  </g>
+  <line x1="66" y1="414" x2="454" y2="414" stroke="#12262b"/>
+  <g font-size="11.5">
+    <text x="66" y="436" fill="#12262b">In production</text>
+    <text x="340" y="436" fill="#74878b" text-anchor="end" font-size="10.5" font-family="IBM Plex Mono, monospace">logistic_reg.</text>
+    <text x="454" y="436" fill="#12262b" text-anchor="end" font-weight="500" font-size="10.5" font-family="IBM Plex Mono, monospace">xgboost</text>
+
+    <text x="66" y="462" fill="#12262b">ROC-AUC</text>
+    <text x="340" y="462" fill="#74878b" text-anchor="end" font-family="IBM Plex Mono, monospace">0.928</text>
+    <text x="454" y="462" fill="#12262b" text-anchor="end" font-weight="500" font-family="IBM Plex Mono, monospace">0.779</text>
+
+    <text x="66" y="488" fill="#12262b">Gini</text>
+    <text x="340" y="488" fill="#74878b" text-anchor="end" font-family="IBM Plex Mono, monospace">0.855</text>
+    <text x="454" y="488" fill="#12262b" text-anchor="end" font-weight="500" font-family="IBM Plex Mono, monospace">0.559</text>
+
+    <text x="66" y="514" fill="#12262b">KS</text>
+    <text x="340" y="514" fill="#74878b" text-anchor="end" font-family="IBM Plex Mono, monospace">0.730</text>
+    <text x="454" y="514" fill="#12262b" text-anchor="end" font-weight="500" font-family="IBM Plex Mono, monospace">0.433</text>
+
+    <text x="66" y="540" fill="#12262b">Base default rate</text>
+    <text x="340" y="540" fill="#74878b" text-anchor="end" font-family="IBM Plex Mono, monospace">7.06%</text>
+    <text x="454" y="540" fill="#12262b" text-anchor="end" font-weight="500" font-family="IBM Plex Mono, monospace">22.12%</text>
+  </g>
+  <rect x="66" y="556" width="388" height="22" fill="#dfe5e0"/>
+  <text x="76" y="571" font-size="10.5" fill="#45595e">Same code, different book. The winner changes on real behaviour.</text>
+
+  <!-- fair lending -->
+  <rect x="504" y="338" width="456" height="252" fill="#f7f9f6" stroke="#c3ccc7"/>
+  <line x1="505" y1="382" x2="959" y2="382" stroke="#c3ccc7"/>
+  <text x="530" y="364" font-size="15" font-weight="600" fill="#12262b">Fair lending on real attributes</text>
+  <g font-size="9.5" font-weight="500" fill="#74878b">
+    <text x="530" y="406">GROUP</text>
+    <text x="800" y="406" text-anchor="end">APPROVAL</text>
+    <text x="856" y="406" text-anchor="end">RATIO</text>
+    <text x="876" y="406">STATUS</text>
+  </g>
+  <line x1="530" y1="414" x2="934" y2="414" stroke="#12262b"/>
+  <g font-size="11.5">
+    <text x="530" y="440" fill="#12262b">Sex &#183; Male</text>
+    <text x="800" y="440" fill="#45595e" text-anchor="end" font-family="IBM Plex Mono, monospace">46.16%</text>
+    <text x="856" y="440" fill="#45595e" text-anchor="end" font-family="IBM Plex Mono, monospace">0.910</text>
+    <text x="876" y="440" fill="#2e6f63" font-size="10.5">Within range</text>
+
+    <text x="530" y="470" fill="#12262b">Marital status &#183; Married</text>
+    <text x="800" y="470" fill="#45595e" text-anchor="end" font-family="IBM Plex Mono, monospace">48.49%</text>
+    <text x="856" y="470" fill="#45595e" text-anchor="end" font-family="IBM Plex Mono, monospace">0.979</text>
+    <text x="876" y="470" fill="#2e6f63" font-size="10.5">Within range</text>
+
+    <text x="530" y="500" fill="#12262b" font-weight="600">Education &#183; High School</text>
+    <text x="800" y="500" fill="#45595e" text-anchor="end" font-family="IBM Plex Mono, monospace">41.24%</text>
+    <text x="856" y="500" fill="#b3382c" text-anchor="end" font-weight="600" font-family="IBM Plex Mono, monospace">0.746</text>
+    <text x="876" y="500" fill="#b3382c" font-size="10.5" font-weight="600">Flagged</text>
+
+    <text x="530" y="530" fill="#12262b">Education &#183; Graduate</text>
+    <text x="800" y="530" fill="#45595e" text-anchor="end" font-family="IBM Plex Mono, monospace">55.27%</text>
+    <text x="856" y="530" fill="#45595e" text-anchor="end" font-family="IBM Plex Mono, monospace">1.000</text>
+    <text x="876" y="530" fill="#2e6f63" font-size="10.5">Within range</text>
+  </g>
+  <rect x="530" y="550" width="404" height="28" fill="#f2dedb"/>
+  <rect x="530" y="550" width="2" height="28" fill="#b3382c"/>
+  <text x="542" y="562" font-size="10.5" fill="#b3382c">Education never reaches the model. This arrived through correlated</text>
+  <text x="542" y="574" font-size="10.5" fill="#b3382c">behaviour, which is the point of running the screen.</text>
+</svg>

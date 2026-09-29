@@ -1,0 +1,127 @@
+<svg viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg" font-family="Instrument Sans, Segoe UI, Arial, sans-serif">
+  <defs>
+    <pattern id="graph" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0H0V28" fill="none" stroke="#d6ddd8" stroke-width="1"/>
+    </pattern>
+    <pattern id="minor" width="14" height="6" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#9aa9ac" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="70" height="11" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="11" stroke="#74878b" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1000" height="620" fill="#dfe5e0"/>
+
+  <!-- nav -->
+  <rect x="0" y="0" width="1000" height="56" fill="#dfe5e0"/>
+  <line x1="0" y1="56" x2="1000" y2="56" stroke="#12262b"/>
+  <text x="40" y="34" font-size="15" font-weight="600" fill="#12262b" letter-spacing="-0.4">BankAI</text>
+  <text x="100" y="34" font-size="10" fill="#74878b">credit risk</text>
+  <g font-size="12" font-weight="500" fill="#74878b">
+    <text x="176" y="34" fill="#12262b">Loan book</text>
+    <text x="256" y="34">Account</text>
+    <text x="324" y="34">Watchlist</text>
+    <text x="396" y="34">Model</text>
+    <text x="448" y="34">Score</text>
+    <text x="500" y="34">Scenario</text>
+    <text x="566" y="34">Real book</text>
+  </g>
+  <rect x="176" y="54" width="62" height="2" fill="#12262b"/>
+  <rect x="900" y="16" width="60" height="22" fill="none" stroke="#c3ccc7"/>
+  <rect x="900" y="16" width="30" height="22" fill="#12262b"/>
+  <text x="915" y="31" font-size="10" font-weight="600" fill="#f7f9f6" text-anchor="middle">EN</text>
+  <text x="945" y="31" font-size="10" font-weight="600" fill="#74878b" text-anchor="middle">TR</text>
+
+  <!-- header -->
+  <text x="40" y="112" font-size="32" font-weight="600" fill="#12262b" letter-spacing="-0.8">Loan book</text>
+  <text x="40" y="136" font-size="13" fill="#45595e">Where the portfolio sits across the risk bands right now, and which accounts moved.</text>
+  <text x="960" y="110" font-size="22" font-weight="500" fill="#12262b" text-anchor="end" font-family="IBM Plex Mono, monospace" letter-spacing="-0.5">20,000</text>
+  <text x="960" y="128" font-size="11" fill="#74878b" text-anchor="end">accounts</text>
+  <line x1="40" y1="156" x2="960" y2="156" stroke="#12262b"/>
+
+  <!-- measure panel -->
+  <rect x="40" y="184" width="920" height="214" fill="#f7f9f6" stroke="#c3ccc7"/>
+  <rect x="41" y="185" width="918" height="150" fill="url(#graph)"/>
+  <text x="68" y="216" font-size="15" font-weight="600" fill="#12262b">Accounts by risk band</text>
+
+  <rect x="68" y="234" width="864" height="40" fill="none" stroke="#12262b"/>
+  <rect x="69" y="235" width="665" height="38" fill="#2e6f63"/>
+  <rect x="734" y="235" width="66" height="38" fill="#9c7420"/>
+  <rect x="800" y="235" width="57" height="38" fill="#b3561f"/>
+  <rect x="857" y="235" width="74" height="38" fill="#8c2a22"/>
+
+  <line x1="68" y1="275" x2="932" y2="275" stroke="#12262b"/>
+  <rect x="68" y="275" width="864" height="6" fill="url(#minor)"/>
+  <rect x="68" y="275" width="864" height="11" fill="url(#major)"/>
+
+  <g font-size="11">
+    <rect x="68" y="300" width="9" height="9" fill="#2e6f63"/>
+    <text x="84" y="309" fill="#45595e">Low</text>
+    <text x="118" y="309" fill="#12262b" font-weight="500" font-family="IBM Plex Mono, monospace">15,420</text>
+    <text x="172" y="309" fill="#74878b" font-size="9.5" font-family="IBM Plex Mono, monospace">77.1%</text>
+
+    <rect x="228" y="300" width="9" height="9" fill="#9c7420"/>
+    <text x="244" y="309" fill="#45595e">Medium</text>
+    <text x="296" y="309" fill="#12262b" font-weight="500" font-family="IBM Plex Mono, monospace">1,530</text>
+    <text x="342" y="309" fill="#74878b" font-size="9.5" font-family="IBM Plex Mono, monospace">7.6%</text>
+
+    <rect x="392" y="300" width="9" height="9" fill="#b3561f"/>
+    <text x="408" y="309" fill="#45595e">High</text>
+    <text x="444" y="309" fill="#12262b" font-weight="500" font-family="IBM Plex Mono, monospace">1,320</text>
+    <text x="490" y="309" fill="#74878b" font-size="9.5" font-family="IBM Plex Mono, monospace">6.6%</text>
+
+    <rect x="540" y="300" width="9" height="9" fill="#8c2a22"/>
+    <text x="556" y="309" fill="#45595e">Critical</text>
+    <text x="600" y="309" fill="#12262b" font-weight="500" font-family="IBM Plex Mono, monospace">1,730</text>
+    <text x="646" y="309" fill="#74878b" font-size="9.5" font-family="IBM Plex Mono, monospace">8.6%</text>
+  </g>
+
+  <line x1="41" y1="335" x2="959" y2="335" stroke="#c3ccc7"/>
+  <line x1="500" y1="335" x2="500" y2="397" stroke="#c3ccc7"/>
+  <text x="68" y="372" font-size="12" fill="#45595e">Average probability of default</text>
+  <text x="472" y="374" font-size="24" font-weight="500" fill="#12262b" text-anchor="end" font-family="IBM Plex Mono, monospace" letter-spacing="-0.6">7.05%</text>
+  <text x="528" y="372" font-size="12" fill="#45595e">Accounts on watch</text>
+  <text x="932" y="374" font-size="24" font-weight="500" fill="#b3382c" text-anchor="end" font-family="IBM Plex Mono, monospace" letter-spacing="-0.6">541</text>
+
+  <!-- watchlist -->
+  <rect x="40" y="424" width="920" height="164" fill="#f7f9f6" stroke="#c3ccc7"/>
+  <line x1="41" y1="470" x2="959" y2="470" stroke="#c3ccc7"/>
+  <text x="68" y="450" font-size="15" font-weight="600" fill="#12262b">Moved onto the watchlist</text>
+  <text x="252" y="450" font-size="11" fill="#74878b">Most recent escalations, still open.</text>
+
+  <g font-size="9.5" font-weight="500" fill="#74878b">
+    <text x="68" y="494">ACCOUNT</text>
+    <text x="180" y="494">FROM</text>
+    <text x="280" y="494">TO</text>
+    <text x="446" y="494" text-anchor="end">PD</text>
+    <text x="480" y="494">NEXT STEP</text>
+  </g>
+  <line x1="68" y1="502" x2="932" y2="502" stroke="#12262b"/>
+
+  <g font-size="11.5" font-family="IBM Plex Mono, monospace">
+    <text x="68" y="524" fill="#12262b">26040</text>
+    <rect x="180" y="513" width="46" height="16" fill="#eedcd9"/>
+    <text x="203" y="525" font-size="10.5" fill="#8c2a22" text-anchor="middle" font-family="Instrument Sans, Segoe UI, sans-serif">Critical</text>
+    <rect x="280" y="513" width="46" height="16" fill="#eedcd9"/>
+    <text x="303" y="525" font-size="10.5" fill="#8c2a22" text-anchor="middle" font-family="Instrument Sans, Segoe UI, sans-serif">Critical</text>
+    <text x="446" y="524" fill="#45595e" text-anchor="end">45.9%</text>
+    <text x="480" y="524" fill="#45595e" font-size="11" font-family="Instrument Sans, Segoe UI, sans-serif">Immediate customer risk review</text>
+
+    <text x="68" y="550" fill="#12262b">26949</text>
+    <rect x="180" y="539" width="38" height="16" fill="#f4e2d5"/>
+    <text x="199" y="551" font-size="10.5" fill="#b3561f" text-anchor="middle" font-family="Instrument Sans, Segoe UI, sans-serif">High</text>
+    <rect x="280" y="539" width="38" height="16" fill="#f4e2d5"/>
+    <text x="299" y="551" font-size="10.5" fill="#b3561f" text-anchor="middle" font-family="Instrument Sans, Segoe UI, sans-serif">High</text>
+    <text x="446" y="550" fill="#45595e" text-anchor="end">16.7%</text>
+    <text x="480" y="550" fill="#45595e" font-size="11" font-family="Instrument Sans, Segoe UI, sans-serif">Immediate customer risk review</text>
+
+    <text x="68" y="576" fill="#12262b">25617</text>
+    <rect x="180" y="565" width="52" height="16" fill="#efe7d4"/>
+    <text x="206" y="577" font-size="10.5" fill="#9c7420" text-anchor="middle" font-family="Instrument Sans, Segoe UI, sans-serif">Medium</text>
+    <rect x="280" y="565" width="52" height="16" fill="#efe7d4"/>
+    <text x="306" y="577" font-size="10.5" fill="#9c7420" text-anchor="middle" font-family="Instrument Sans, Segoe UI, sans-serif">Medium</text>
+    <text x="446" y="576" fill="#45595e" text-anchor="end">10.4%</text>
+    <text x="480" y="576" fill="#45595e" font-size="11" font-family="Instrument Sans, Segoe UI, sans-serif">Monitor closely next cycle</text>
+  </g>
+</svg>
